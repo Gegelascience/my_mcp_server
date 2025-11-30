@@ -15,8 +15,8 @@ const handler = async (
       server.registerTool(
         "getTraficInfo",
         {
-          description: "Get trafic info of metro or rer line in Paris",
-          inputSchema: { line: z.string().describe("Metro or RER line number") },
+          description: "Get trafic info of metro, RER or Transilien line in Paris",
+          inputSchema: { line: z.string().describe("Metro, RER or Transilien line number") },
           outputSchema: { result: z.array(z.object({ message: z.string(), type: z.string() })) },
         },
         async ({ line }) => {
