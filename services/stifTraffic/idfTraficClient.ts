@@ -127,6 +127,33 @@ export class IdfTraficClient {
         else if (line == "E" || line == "RER E") {
             return "C01729"
         }
+        else if (line == "R") {
+            return "C01731"
+        }
+        else if (line == "H") {
+            return "C01737"
+        }
+        else if (line == "P") {
+            return "C01730"
+        }
+        else if (line == "J") {
+            return "C01739"
+        }
+        else if (line == "N") {
+            return "C01736"
+        }
+        else if (line == "L") {
+            return "C01740"
+        }
+        else if (line == "K") {
+            return "C01738"
+        }
+        else if (line == "V") {
+            return "C02711"
+        }
+        else if (line == "U") {
+            return "C01741"
+        }
         else {
             return ""
         }
