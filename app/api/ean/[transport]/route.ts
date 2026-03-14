@@ -10,7 +10,7 @@ const handler = async (
   req: NextRequest,
   {transport}: { transport: string } 
 ) => {
-
+  console.log(transport);
   return createMcpHandler(
     (server) => {
       server.registerTool(
@@ -51,7 +51,7 @@ const handler = async (
 
 
 
-export async function GET(request: NextRequest, { params }: { params: { transport: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ transport: string }> }) {
   const { transport } = await params;
   if (transport !== 'sse') {
     console.warn(`Transport ${transport} is not supported. Expected 'sse'.`);
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest, { params }: { params: { transpor
   return handler(request,{ transport });
 }
 
-export async function POST(request: NextRequest, { params }: { params: { transport: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ transport: string }> }) {
   const { transport } = await params;
   return handler(request,{ transport });
 }
