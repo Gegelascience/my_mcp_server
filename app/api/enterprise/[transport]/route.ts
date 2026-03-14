@@ -1,4 +1,4 @@
-import { NpmInfoClient } from "@/services/npm/npmInfoClient";
+import {EnterpriseApiClient} from "@/services/enterpriseApi/model";
 import { createMcpHandler } from "mcp-handler";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
@@ -13,16 +13,17 @@ const handler = async (
   return createMcpHandler(
     (server) => {
       server.registerTool(
-        "getInfoNpmPackage",
+        "getFrenchEnterpriseMainData",
         {
-          description: "Get informations about an NPM package",
-          inputSchema: z.object({ packageNpm: z.string().describe("NPM package name") }),
+          description: "Get informations about a french enterprise",
+          inputSchema: z.object({ 
+            siret: z.string().describe("SIRET") 
+          }),
           outputSchema: { result: z.any() },
         },
-        async ({ packageNpm }) => {
-          
-          const client = new NpmInfoClient();
-          const data = await client.getPackageInfo(packageNpm);
+        async ({ siret }) => {
+          const client = new EnterpriseApiClient();
+          const data = await client.getEnterpriseMainDataBySiret(siret);
           console.log(JSON.stringify(data));
           return {
             content: [{ type: "text", text: JSON.stringify(data) }],
@@ -33,7 +34,7 @@ const handler = async (
     },
     undefined,
     {
-      basePath: `/api/npmInfo`,
+      basePath: `/api/enterprise`,
     }
   )(req);
 };

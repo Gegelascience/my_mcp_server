@@ -4,11 +4,11 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 import {ContentBlock} from "@modelcontextprotocol/sdk/types.js"; 
 
-
+export const dynamic = 'force-dynamic';
 
 const handler = async (
   req: NextRequest,
-  {}
+  {transport}: { transport: string } 
 ) => {
 
   return createMcpHandler(
@@ -17,7 +17,7 @@ const handler = async (
         "getEanBarCodeSvg",
         {
           description: "Get EAN barcode in svg format. It returns an image in svg format encoded in base64.",
-          inputSchema: { ean: z.string().describe("EAN value") },
+          inputSchema: z.object({ ean: z.string().describe("EAN value") }),
         },
         async ({ ean }) => {
           const client = new EanBarCodeService();
@@ -51,4 +51,15 @@ const handler = async (
 
 
 
-export { handler as GET, handler as POST, handler as OPTIONS };
+export async function GET(request: NextRequest, { params }: { params: { transport: string } }) {
+  const { transport } = await params;
+  if (transport !== 'sse') {
+    console.warn(`Transport ${transport} is not supported. Expected 'sse'.`);
+  }
+  return handler(request,{ transport });
+}
+
+export async function POST(request: NextRequest, { params }: { params: { transport: string } }) {
+  const { transport } = await params;
+  return handler(request,{ transport });
+}

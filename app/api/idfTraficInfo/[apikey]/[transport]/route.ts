@@ -51,7 +51,7 @@ const handler = async (
         "getTraficInfo",
         {
           description: "Get trafic info of metro, RER or Transilien line in Paris",
-          inputSchema: { line: lineEnum },
+          inputSchema: z.object({ line: lineEnum }),
           outputSchema: { result: z.array(z.object({ message: z.string(), type: z.string() })) },
         },
         async ({ line }) => {
